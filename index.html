@@ -690,22 +690,13 @@ function buildPrompt(){
   const scores=calcScores();
   const slCount=Object.values(G.sltp).filter(r=>r.sl).length;
   const tpCount=Object.values(G.sltp).filter(r=>r.tp).length;
-  return`你是一位专业的金融交易培训师，正在为金融实习生做20天模拟交易复盘。根据以下详细数据，严格只输出JSON，不要任何其他内容。
+  return`交易培训师复盘。只输出JSON，不加任何说明文字。
 
-【结算数据】
-初始资金：¥100,000，最终总资产：${fmt(total)}，盈亏：${pnl>=0?'+':''}${fmt(pnl)}(${pct}%)
-交易${G.tradeLog.length}次（${G.tradeLog.filter(t=>t.action==='买入').length}买入/${G.tradeLog.filter(t=>t.action==='卖出').length}卖出/${G.tradeLog.filter(t=>t.action==='做空').length}做空/${G.tradeLog.filter(t=>t.action==='平空').length}平空）
-止损触发${G.slTriggers}次，止盈触发${G.tpTriggers}次
-设置止损${slCount}次，设置止盈${tpCount}次
-新闻当天操作${G.tradeLog.filter(t=>t.newsTriggered).length}次（共11次新闻），最常交易：${fav?fav[0]+'('+fav[1]+'次)':'无'}
-仓位评分：分散度${scores.div}分，风险控制${scores.risk}分，交易纪律${scores.disc}分
-20天行情：${perf}
+数据：初始¥100,000，最终${fmt(total)}，盈亏${pnl>=0?'+':''}${fmt(pnl)}(${pct}%)
+操作：共${G.tradeLog.length}次（买${G.tradeLog.filter(t=>t.action==='买入').length}/卖${G.tradeLog.filter(t=>t.action==='卖出').length}/空${G.tradeLog.filter(t=>t.action==='做空').length}/平${G.tradeLog.filter(t=>t.action==='平空').length}）止损触发${G.slTriggers}次止盈${G.tpTriggers}次，新闻日操作${G.tradeLog.filter(t=>t.newsTriggered).length}/11次，最常交易${fav?fav[0]+'×'+fav[1]:'无'}，涉及${new Set(G.tradeLog.map(t=>t.code)).size}只股票
+评分：分散${scores.div}/风控${scores.risk}/纪律${scores.disc}
 
-【逐笔交易记录】
-${detail}
-
-输出JSON（不加markdown代码块）：
-{"styleTag":"2-3词交易风格标签","styleColor":"十六进制颜色","styleBg":"对应浅色背景","styleSummary":"3-4句描述整体交易特点和决策模式，要提到止损止盈使用情况","pros":["结合数据的具体优点1","优点2","优点3"],"cons":["结合数据的具体改进1","改进2","改进3"],"suggestions":[{"title":"学习方向1","action":"具体可操作练习方法"},{"title":"学习方向2","action":"具体可操作练习方法"},{"title":"学习方向3","action":"具体可操作练习方法"}],"closing":"一句鼓励性总评含风格标签","scoreComment":"针对三项仓位评分的2-3句综合点评","tradeCount":"${G.tradeLog.length}次","finalAsset":"${fmt(total)}","pnlStr":"${(pnl>=0?'+':'')+fmt(pnl)}","pnlPct":"${(pnl>=0?'+':'')+pct}%","divScore":${scores.div},"riskScore":${scores.risk},"discScore":${scores.disc}}`;
+输出：{"styleTag":"2-3词风格","styleColor":"#hex","styleBg":"#hex浅色","styleSummary":"3句话描述特点含止损止盈情况","pros":["优点1","优点2","优点3"],"cons":["改进1","改进2","改进3"],"suggestions":[{"title":"方向1","action":"练习方法"},{"title":"方向2","action":"练习方法"},{"title":"方向3","action":"练习方法"}],"closing":"一句鼓励","scoreComment":"2句评分点评","tradeCount":"${G.tradeLog.length}次","finalAsset":"${fmt(total)}","pnlStr":"${(pnl>=0?'+':'')+fmt(pnl)}","pnlPct":"${(pnl>=0?'+':'')+pct}%","divScore":${scores.div},"riskScore":${scores.risk},"discScore":${scores.disc}}`;
 }
 
 async function generateReport(){
