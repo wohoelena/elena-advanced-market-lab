@@ -62,7 +62,7 @@ h1{font-size:20px;font-weight:500}
 .bn{background:var(--bg2);color:var(--text);border-color:var(--border2);font-size:12px;padding:6px 14px}.bn:hover{background:var(--bg3)}
 .bx{background:var(--blue);color:#fff;border-color:var(--blue);font-size:13px;padding:8px 20px}.bx:hover{opacity:.9}
 .short-tip{font-size:11px;color:var(--text2);background:var(--bg2);border-radius:6px;padding:8px 10px;margin-bottom:10px;line-height:1.6;display:none}
-.sl-tp-box{background:var(--bg2);border-radius:var(--r);padding:10px 12px;margin-bottom:10px;display:none}
+.sl-tp-box{background:var(--bg2);border-radius:var(--r);padding:10px 12px;margin-bottom:10px;display:block}
 .sl-tp-title{font-size:11px;font-weight:500;color:var(--text2);margin-bottom:8px}
 .sl-tp-row{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:6px}
 .sl-tp-row:last-child{margin-bottom:0}
@@ -722,8 +722,177 @@ async function generateReport(){
     renderReport(JSON.parse(jsonMatch[0]));
     document.getElementById('dl-btn').style.display='';
   }catch(e){
-    document.getElementById('report-content').innerHTML=`<div style="padding:20px;color:#D85A30;font-size:13px;line-height:1.7">报告生成失败：<br><code style="background:#f5f5f3;padding:4px 8px;border-radius:4px;font-size:11px">${e.message}</code></div>`;
+    const _personaSvg=persona.svg;
+  const _personaName=persona.name;
+  const _personaSub=persona.sub;
+  const _personaColor=persona.color;
+  const _personaBg=persona.bg;
+  document.getElementById('report-content').innerHTML=`<div style="padding:20px;color:#D85A30;font-size:13px;line-height:1.7">报告生成失败：<br><code style="background:#f5f5f3;padding:4px 8px;border-radius:4px;font-size:11px">${e.message}</code></div>`;
   }
+}
+
+
+/* ── 交易人格系统 ── */
+const PERSONAS = {
+  guardian: {
+    name:'稳健守护者', sub:'风险控制高手',
+    color:'#1D9E75', bg:'#E1F5EE',
+    svg:`<svg viewBox="0 0 80 100" width="80" height="100">
+      <ellipse cx="40" cy="22" rx="13" ry="13" fill="#E1F5EE" stroke="#1D9E75" stroke-width="1.5"/>
+      <circle cx="40" cy="22" r="8" fill="#1D9E75"/>
+      <rect x="27" y="38" width="26" height="22" rx="4" fill="#1D9E75"/>
+      <path d="M33 44 L40 42 L47 44 L47 52 Q40 56 33 52 Z" fill="#E1F5EE" stroke="#0F6E56" stroke-width="1"/>
+      <rect x="30" y="59" width="8" height="16" rx="3" fill="#1D9E75"/>
+      <rect x="42" y="59" width="8" height="16" rx="3" fill="#1D9E75"/>
+      <rect x="17" y="40" width="10" height="6" rx="3" fill="#1D9E75"/>
+      <rect x="53" y="40" width="10" height="6" rx="3" fill="#1D9E75"/>
+    </svg>`
+  },
+  bull: {
+    name:'激进多头牛', sub:'买入型冒险家',
+    color:'#D85A30', bg:'#FAECE7',
+    svg:`<svg viewBox="0 0 80 100" width="80" height="100">
+      <ellipse cx="40" cy="22" rx="13" ry="13" fill="#FAECE7" stroke="#D85A30" stroke-width="1.5"/>
+      <circle cx="40" cy="22" r="8" fill="#D85A30"/>
+      <path d="M30 16 Q24 8 20 12" stroke="#D85A30" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+      <path d="M50 16 Q56 8 60 12" stroke="#D85A30" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+      <rect x="27" y="38" width="26" height="22" rx="4" fill="#D85A30"/>
+      <path d="M40 57 L40 44 M36 48 L40 44 L44 48" stroke="white" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      <rect x="30" y="59" width="8" height="16" rx="3" fill="#D85A30"/>
+      <rect x="42" y="59" width="8" height="16" rx="3" fill="#D85A30"/>
+      <rect x="17" y="38" width="10" height="6" rx="3" fill="#D85A30" transform="rotate(-20,22,41)"/>
+      <rect x="53" y="38" width="10" height="6" rx="3" fill="#D85A30" transform="rotate(20,58,41)"/>
+    </svg>`
+  },
+  bear: {
+    name:'冷静空头熊', sub:'做空型逆向者',
+    color:'#534AB7', bg:'#EEEDFE',
+    svg:`<svg viewBox="0 0 80 100" width="80" height="100">
+      <ellipse cx="40" cy="22" rx="13" ry="13" fill="#EEEDFE" stroke="#534AB7" stroke-width="1.5"/>
+      <circle cx="40" cy="22" r="8" fill="#534AB7"/>
+      <circle cx="29" cy="13" r="5" fill="#534AB7"/>
+      <circle cx="51" cy="13" r="5" fill="#534AB7"/>
+      <circle cx="29" cy="13" r="3" fill="#EEEDFE"/>
+      <circle cx="51" cy="13" r="3" fill="#EEEDFE"/>
+      <rect x="27" y="38" width="26" height="22" rx="4" fill="#534AB7"/>
+      <path d="M40 44 L40 57 M36 53 L40 57 L44 53" stroke="white" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      <rect x="30" y="59" width="8" height="16" rx="3" fill="#534AB7"/>
+      <rect x="42" y="59" width="8" height="16" rx="3" fill="#534AB7"/>
+      <rect x="17" y="40" width="10" height="6" rx="3" fill="#534AB7"/>
+      <rect x="53" y="40" width="10" height="6" rx="3" fill="#534AB7"/>
+    </svg>`
+  },
+  hunter: {
+    name:'消息猎手', sub:'新闻驱动型',
+    color:'#BA7517', bg:'#FAEEDA',
+    svg:`<svg viewBox="0 0 80 100" width="80" height="100">
+      <ellipse cx="40" cy="22" rx="13" ry="13" fill="#FAEEDA" stroke="#BA7517" stroke-width="1.5"/>
+      <circle cx="40" cy="22" r="8" fill="#BA7517"/>
+      <rect x="44" y="18" width="14" height="5" rx="2" fill="#BA7517" stroke="#633806" stroke-width="1"/>
+      <rect x="22" y="19" width="10" height="4" rx="2" fill="#BA7517" stroke="#633806" stroke-width="1"/>
+      <rect x="32" y="18" width="12" height="5" rx="1" fill="#EF9F27"/>
+      <rect x="27" y="38" width="26" height="22" rx="4" fill="#BA7517"/>
+      <rect x="38" y="43" width="4" height="9" rx="2" fill="white"/>
+      <circle cx="40" cy="56" r="2" fill="white"/>
+      <rect x="30" y="59" width="8" height="16" rx="3" fill="#BA7517"/>
+      <rect x="42" y="59" width="8" height="16" rx="3" fill="#BA7517"/>
+      <rect x="17" y="40" width="10" height="6" rx="3" fill="#BA7517"/>
+      <rect x="53" y="40" width="10" height="6" rx="3" fill="#BA7517"/>
+    </svg>`
+  },
+  monk: {
+    name:'佛系观察者', sub:'谨慎观望型',
+    color:'#5F5E5A', bg:'#F1EFE8',
+    svg:`<svg viewBox="0 0 80 100" width="80" height="100">
+      <ellipse cx="40" cy="22" rx="13" ry="13" fill="#F1EFE8" stroke="#5F5E5A" stroke-width="1.5"/>
+      <circle cx="40" cy="22" r="8" fill="#888780"/>
+      <circle cx="36" cy="22" r="4" fill="none" stroke="#F1EFE8" stroke-width="1.5"/>
+      <circle cx="44" cy="22" r="4" fill="none" stroke="#F1EFE8" stroke-width="1.5"/>
+      <line x1="32" y1="22" x2="29" y2="21" stroke="#F1EFE8" stroke-width="1.5"/>
+      <line x1="48" y1="22" x2="51" y2="21" stroke="#F1EFE8" stroke-width="1.5"/>
+      <rect x="27" y="38" width="26" height="22" rx="4" fill="#888780"/>
+      <circle cx="35" cy="50" r="2" fill="white"/>
+      <circle cx="40" cy="50" r="2" fill="white"/>
+      <circle cx="45" cy="50" r="2" fill="white"/>
+      <rect x="17" y="35" width="10" height="6" rx="3" fill="#888780" transform="rotate(-40,22,38)"/>
+      <rect x="53" y="40" width="10" height="6" rx="3" fill="#888780"/>
+      <rect x="30" y="59" width="8" height="18" rx="3" fill="#888780"/>
+      <rect x="42" y="59" width="8" height="18" rx="3" fill="#888780"/>
+    </svg>`
+  },
+  octopus: {
+    name:'章鱼分散王', sub:'均衡多元型',
+    color:'#185FA5', bg:'#E6F1FB',
+    svg:`<svg viewBox="0 0 80 100" width="80" height="100">
+      <ellipse cx="40" cy="22" rx="13" ry="13" fill="#E6F1FB" stroke="#378ADD" stroke-width="1.5"/>
+      <circle cx="40" cy="22" r="8" fill="#378ADD"/>
+      <rect x="27" y="38" width="26" height="22" rx="4" fill="#378ADD"/>
+      <rect x="14" y="35" width="13" height="5" rx="2.5" fill="#378ADD" transform="rotate(-35,20,37)"/>
+      <rect x="14" y="44" width="13" height="5" rx="2.5" fill="#378ADD"/>
+      <rect x="14" y="52" width="13" height="5" rx="2.5" fill="#378ADD" transform="rotate(25,20,54)"/>
+      <rect x="53" y="35" width="13" height="5" rx="2.5" fill="#378ADD" transform="rotate(35,60,37)"/>
+      <rect x="53" y="44" width="13" height="5" rx="2.5" fill="#378ADD"/>
+      <rect x="53" y="52" width="13" height="5" rx="2.5" fill="#378ADD" transform="rotate(-25,60,54)"/>
+      <circle cx="40" cy="49" r="5" fill="white" opacity="0.9"/>
+      <line x1="40" y1="44" x2="40" y2="54" stroke="#378ADD" stroke-width="1.5"/>
+      <line x1="35" y1="49" x2="45" y2="49" stroke="#378ADD" stroke-width="1.5"/>
+      <rect x="30" y="59" width="8" height="16" rx="3" fill="#378ADD"/>
+      <rect x="42" y="59" width="8" height="16" rx="3" fill="#378ADD"/>
+    </svg>`
+  },
+  flash: {
+    name:'闪电短线侠', sub:'高频交易型',
+    color:'#993556', bg:'#FBEAF0',
+    svg:`<svg viewBox="0 0 80 100" width="80" height="100">
+      <ellipse cx="40" cy="22" rx="13" ry="13" fill="#FBEAF0" stroke="#D4537E" stroke-width="1.5"/>
+      <circle cx="40" cy="22" r="8" fill="#D4537E"/>
+      <path d="M38 12 L34 20 L39 20 L35 30 L44 18 L39 18 Z" fill="#FBEAF0" stroke="#993556" stroke-width="0.5"/>
+      <rect x="27" y="38" width="26" height="22" rx="4" fill="#D4537E"/>
+      <path d="M44 43 L30 50 M46 48 L32 55" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+      <rect x="30" y="59" width="8" height="16" rx="3" fill="#D4537E" transform="rotate(15,34,67)"/>
+      <rect x="42" y="59" width="8" height="16" rx="3" fill="#D4537E" transform="rotate(-15,46,67)"/>
+      <rect x="16" y="42" width="11" height="5" rx="2.5" fill="#D4537E" transform="rotate(-30,21,44)"/>
+      <rect x="53" y="36" width="11" height="5" rx="2.5" fill="#D4537E" transform="rotate(45,58,38)"/>
+    </svg>`
+  },
+  dualist: {
+    name:'多空双剑客', sub:'多空双向型',
+    color:'#27500A', bg:'#EAF3DE',
+    svg:`<svg viewBox="0 0 80 100" width="80" height="100">
+      <ellipse cx="40" cy="22" rx="13" ry="13" fill="#EAF3DE" stroke="#3B6D11" stroke-width="1.5"/>
+      <circle cx="40" cy="22" r="8" fill="#3B6D11"/>
+      <line x1="34" y1="10" x2="30" y2="20" stroke="#97C459" stroke-width="2" stroke-linecap="round"/>
+      <line x1="46" y1="10" x2="50" y2="20" stroke="#97C459" stroke-width="2" stroke-linecap="round"/>
+      <rect x="27" y="38" width="26" height="22" rx="4" fill="#3B6D11"/>
+      <path d="M36 44 L36 56 M33 47 L36 44 L39 47" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M44 56 L44 44 M41 53 L44 56 L47 53" stroke="#9FE1CB" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      <rect x="30" y="59" width="8" height="16" rx="3" fill="#3B6D11"/>
+      <rect x="42" y="59" width="8" height="16" rx="3" fill="#3B6D11"/>
+      <rect x="17" y="38" width="10" height="6" rx="3" fill="#3B6D11" transform="rotate(-20,22,41)"/>
+      <rect x="53" y="38" width="10" height="6" rx="3" fill="#3B6D11" transform="rotate(20,58,41)"/>
+    </svg>`
+  }
+};
+
+function getPersona(tradeLog, longs, shorts, sltp, slTriggers, tpTriggers) {
+  const total = tradeLog.length;
+  const shortCount = tradeLog.filter(t=>t.action==='做空'||t.action==='平空').length;
+  const newsOps = tradeLog.filter(t=>t.newsTriggered).length;
+  const slCount = Object.values(sltp).filter(r=>r&&r.sl).length;
+  const stockCount = new Set(tradeLog.map(t=>t.code)).size;
+  const freq = {};
+  tradeLog.forEach(t=>{freq[t.code]=(freq[t.code]||0)+1;});
+  const maxFreq = Math.max(0,...Object.values(freq));
+
+  if (shortCount >= 4) return PERSONAS.bear;
+  if (shortCount >= 2 && tradeLog.filter(t=>t.action==='买入').length >= 3) return PERSONAS.dualist;
+  if (slCount >= 3 && stockCount >= 3) return PERSONAS.guardian;
+  if (newsOps >= 4) return PERSONAS.hunter;
+  if (total >= 18) return PERSONAS.flash;
+  if (stockCount >= 4 && maxFreq <= 3) return PERSONAS.octopus;
+  if (total <= 3) return PERSONAS.monk;
+  if (tradeLog.filter(t=>t.action==='买入').length >= 6 && slCount === 0) return PERSONAS.bull;
+  return PERSONAS.guardian;
 }
 
 function renderReport(r){
@@ -734,6 +903,7 @@ function renderReport(r){
   const dateStr=`${now.getFullYear()}年${now.getMonth()+1}月${now.getDate()}日`;
   const tagColor=r.styleColor||'#378ADD';
   const tagBg=r.styleBg||'#E6F1FB';
+  const persona=getPersona(G.tradeLog,G.longs,G.shorts,G.sltp,G.slTriggers,G.tpTriggers);
   const scoreBar=(val)=>`<div style="height:3px;border-radius:3px;background:${val>=80?'#1D9E75':val>=60?'#EF9F27':'#D85A30'};width:${val}%;margin-top:5px"></div>`;
   document.getElementById('report-content').innerHTML=`
   <div id="report-card">
@@ -744,7 +914,13 @@ function renderReport(r){
         <div class="rc-meta-sub">20天模拟交易 · ${dateStr} · Developed by Elena Zhang</div>
       </div>
     </div>
-    <div style="margin-bottom:14px"><span class="rc-tag" style="background:${tagBg};color:${tagColor};border:1px solid ${tagColor}40">${r.styleTag}</span></div>
+    <div style="display:flex;align-items:center;gap:16px;margin-bottom:16px">
+      <div style="flex-shrink:0;background:${_personaBg};border-radius:12px;padding:8px;display:flex;align-items:center;justify-content:center">${_personaSvg}</div>
+      <div>
+        <div style="font-size:12px;font-weight:500;color:${_personaColor};margin-bottom:4px">${_personaName} · ${_personaSub}</div>
+        <span class="rc-tag" style="background:${tagBg};color:${tagColor};border:1px solid ${tagColor}40">${r.styleTag}</span>
+      </div>
+    </div>
     <div class="rc-stats">
       <div class="rc-stat"><div class="rc-stat-v">${r.finalAsset||fmt(total)}</div><div class="rc-stat-l">最终资产</div></div>
       <div class="rc-stat"><div class="rc-stat-v ${pnl>=0?'up':'dn'}">${r.pnlStr||(pnl>=0?'+':'')+fmt(pnl)}</div><div class="rc-stat-l">总盈亏</div></div>
@@ -757,7 +933,32 @@ function renderReport(r){
       <div class="rc-score-box"><div class="rc-score-v" style="color:${r.discScore>=80?'#1D9E75':r.discScore>=60?'#BA7517':'#D85A30'}">${r.discScore}分</div><div class="rc-score-l">交易纪律</div>${scoreBar(r.discScore)}</div>
     </div>
     <div class="rc-summary">${r.styleSummary}</div>
-    ${r.scoreComment?`<div style="font-size:12px;line-height:1.7;color:#555;padding:10px 12px;background:#f5f5f3;border-radius:8px;margin-bottom:14px"><strong style="color:#1a1a1a">📊 仓位管理点评：</strong>${r.scoreComment}</div>`:''}
+    <div style="margin-bottom:14px">
+      <div style="font-size:11px;font-weight:500;color:#888;text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px">📊 仓位管理评分详解</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:8px">
+        <div style="background:#f5f5f3;border-radius:8px;padding:10px;text-align:center">
+          <div style="font-size:18px;font-weight:500;color:${r.divScore>=80?'#1D9E75':r.divScore>=60?'#BA7517':'#D85A30'}">${r.divScore}分</div>
+          <div style="font-size:10px;color:#888;margin:3px 0">分散度</div>
+          <div style="height:3px;border-radius:3px;background:${r.divScore>=80?'#1D9E75':r.divScore>=60?'#EF9F27':'#D85A30'};width:${r.divScore}%;margin:4px auto 0"></div>
+        </div>
+        <div style="background:#f5f5f3;border-radius:8px;padding:10px;text-align:center">
+          <div style="font-size:18px;font-weight:500;color:${r.riskScore>=80?'#1D9E75':r.riskScore>=60?'#BA7517':'#D85A30'}">${r.riskScore}分</div>
+          <div style="font-size:10px;color:#888;margin:3px 0">风险控制</div>
+          <div style="height:3px;border-radius:3px;background:${r.riskScore>=80?'#1D9E75':r.riskScore>=60?'#EF9F27':'#D85A30'};width:${r.riskScore}%;margin:4px auto 0"></div>
+        </div>
+        <div style="background:#f5f5f3;border-radius:8px;padding:10px;text-align:center">
+          <div style="font-size:18px;font-weight:500;color:${r.discScore>=80?'#1D9E75':r.discScore>=60?'#BA7517':'#D85A30'}">${r.discScore}分</div>
+          <div style="font-size:10px;color:#888;margin:3px 0">交易纪律</div>
+          <div style="height:3px;border-radius:3px;background:${r.discScore>=80?'#1D9E75':r.discScore>=60?'#EF9F27':'#D85A30'};width:${r.discScore}%;margin:4px auto 0"></div>
+        </div>
+      </div>
+      <div style="font-size:12px;line-height:1.8;color:#555;padding:10px 12px;background:#f5f5f3;border-radius:8px">
+        <div style="margin-bottom:6px"><strong style="color:#1a1a1a">分散度（${r.divScore}分）评分依据：</strong>持仓股票数量及单只集中度。持有3只以上且单只不超过总资产40%可获高分。</div>
+        <div style="margin-bottom:6px"><strong style="color:#1a1a1a">风险控制（${r.riskScore}分）评分依据：</strong>多仓中设置止损的比例 + 空仓保证金占比。为每笔多仓设置止损、控制做空规模可获高分。</div>
+        <div style="margin-bottom:6px"><strong style="color:#1a1a1a">交易纪律（${r.discScore}分）评分依据：</strong>总交易频率 + 止损止盈自动触发次数。操作克制、执行计划（5次以内最优）可获高分。</div>
+        ${r.scoreComment?`<div style="margin-top:8px;padding-top:8px;border-top:0.5px solid #e5e5e5"><strong style="color:#1a1a1a">AI综合点评：</strong>${r.scoreComment}</div>`:''}
+      </div>
+    </div>
     <div class="rc-grid">
       <div class="rc-box"><div class="rc-box-t">✅ 三大优点</div><ul>${r.pros.map(p=>`<li>${p}</li>`).join('')}</ul></div>
       <div class="rc-box"><div class="rc-box-t">⚠️ 待改进点</div><ul>${r.cons.map(c=>`<li>${c}</li>`).join('')}</ul></div>
@@ -817,7 +1018,7 @@ document.getElementById('reset-btn').onclick=()=>{
   document.getElementById('c-title').textContent='点击股票卡片查看K线图';
   document.getElementById('c-info').textContent='';
   const c=document.getElementById('kline');c.getContext('2d').clearRect(0,0,c.width,c.height);
-  initG();setMode('long');renderAll();
+  initG();setMode('long');document.getElementById('sl-tp-box').style.display='block';renderAll();
 };
 document.getElementById('btn-buy').onclick=doBuy;
 document.getElementById('btn-sell').onclick=doSell;
@@ -834,7 +1035,7 @@ function enterSim(){
   setTimeout(()=>el.style.display='none',250);
 }
 
-initG();renderAll();
+initG();document.getElementById('sl-tp-box').style.display='block';renderAll();
 </script>
 </body>
 </html>
