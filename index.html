@@ -883,27 +883,31 @@ async function downloadReport(){
   const card=document.getElementById('report-card');
   if(!card){alert('请先生成报告再下载');return;}
   const btn=document.getElementById('dl-btn');
-  const origText=btn.textContent;
   btn.textContent='生成中…';btn.disabled=true;
   try{
-    // Temporarily move card to body for html2canvas
-    const wrapper=document.createElement('div');
-    wrapper.style.cssText='position:fixed;left:-9999px;top:0;width:660px;background:#1e222d;z-index:-1';
-    wrapper.appendChild(card.cloneNode(true));
-    document.body.appendChild(wrapper);
-    const canvas=await html2canvas(wrapper.firstChild,{
-      scale:2,backgroundColor:'#1e222d',useCORS:true,logging:false,
-      width:660,windowWidth:660
+    const canvas=await html2canvas(card,{
+      scale:2,
+      backgroundColor:'#1e222d',
+      useCORS:true,
+      logging:false,
+      scrollX:0,
+      scrollY:-window.scrollY,
+      windowWidth:document.documentElement.scrollWidth,
+      windowHeight:document.documentElement.scrollHeight,
+      onclone:(doc)=>{
+        const el=doc.getElementById('report-card');
+        if(el){el.style.width='640px';el.style.maxWidth='640px';}
+      }
     });
-    document.body.removeChild(wrapper);
     const link=document.createElement('a');
     link.href=canvas.toDataURL('image/png');
     link.download='交易风格报告.png';
+    link.style.display='none';
     document.body.appendChild(link);
     link.click();
-    setTimeout(()=>document.body.removeChild(link),100);
+    setTimeout(()=>{if(link.parentNode)link.parentNode.removeChild(link);},200);
   }catch(e){alert('下载失败：'+e.message);}
-  btn.textContent=origText;btn.disabled=false;
+  btn.textContent='⬇ 下载图片';btn.disabled=false;
 }
 
 document.getElementById('next-btn').onclick=()=>{
