@@ -184,74 +184,77 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 
 .footer-bar{border-top:0.5px solid var(--tv-border);padding:5px 14px;font-size:10px;color:var(--tv-text2);display:flex;justify-content:space-between;flex-shrink:0}
 /* ── Mobile: full reflow ── */
+
+
 @media(max-width:768px){
-  /* Kill fixed height — let page scroll naturally */
-  .app{height:auto;overflow:visible;min-height:100vh}
-  .main{grid-template-columns:1fr;overflow:visible;height:auto}
-  .chart-panel{border-right:none;border-bottom:0.5px solid var(--tv-border);height:auto}
-  .trade-panel{overflow:visible;height:auto}
+  /* ① Full-page scroll */
+  .app{height:auto!important;overflow:visible!important;display:flex!important;flex-direction:column!important;min-height:100vh}
 
-  /* Header */
-  .hdr{padding:0 12px;height:44px;flex-wrap:wrap}
-  .hdr-right{gap:5px}
-  .badge{font-size:9px;padding:1px 6px}
-  .btn-next{font-size:11px;padding:5px 10px}
-  .btn-reset{padding:5px 8px}
-  .day-pill{font-size:10px;padding:3px 7px}
-
-  /* Stats — scrollable strip */
-  .stats-row{display:flex;overflow-x:auto;-webkit-overflow-scrolling:touch;border-bottom:0.5px solid var(--tv-border)}
-  .stat{flex:0 0 auto;width:110px;padding:8px 12px;border-right:0.5px solid var(--tv-border)}
+  /* ② Stats: horizontal scroll strip */
+  .stats-row{display:flex!important;overflow-x:auto!important;-webkit-overflow-scrolling:touch;border-bottom:0.5px solid var(--tv-border);flex-wrap:nowrap}
+  .stat{flex:0 0 100px!important;padding:8px 10px;border-right:0.5px solid var(--tv-border)}
+  .stat:last-child{border-right:none}
   .stat-lbl{font-size:9px}
-  .stat-val{font-size:14px}
+  .stat-val{font-size:13px}
 
-  /* Stock grid — 2 cols */
-  .mkt-grid{grid-template-columns:repeat(2,1fr)}
-  .sk{padding:8px 10px}
-  .sk-nm{font-size:11px}
-  .sk-cd{font-size:9px}
-  .sk-pr{font-size:14px}
+  /* ③ Stock grid: 3 cols */
+  .mkt-grid{display:grid!important;grid-template-columns:repeat(3,1fr)!important}
+  .sk{padding:7px 8px}
+  .sk-nm{font-size:10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .sk-cd{font-size:9px;margin-top:0}
+  .sk-pr{font-size:12px}
+  .sk-ch{font-size:10px}
 
-  /* Chart */
-  #kline-wrap{height:220px;padding:8px;flex:none}
+  /* ④ Main: single column vertical stack */
+  .main{display:flex!important;flex-direction:column!important;height:auto!important;overflow:visible!important;min-height:0}
 
-  /* Scores */
+  /* ⑤ Chart panel */
+  .chart-panel{border-right:none!important;border-bottom:0.5px solid var(--tv-border);height:auto!important;overflow:visible!important;flex-shrink:0}
+  .chart-hdr{padding:8px 12px}
+  .chart-title{font-size:12px}
+  .chart-ohlc{font-size:10px}
+  #kline-wrap{height:200px!important;flex:none!important;min-height:0!important;padding:6px}
+  #kline{display:block}
+
+  /* ⑥ Score panel */
   .score-panel{padding:10px 12px}
-  .score-grid{grid-template-columns:repeat(3,1fr);gap:10px}
+  .score-grid{gap:8px}
   .score-key{font-size:9px}
   .score-num{font-size:11px}
-  .score-tip-text{font-size:10px;margin-top:6px}
+  .score-tip-text{font-size:10px;padding:5px 7px;margin-top:5px}
 
-  /* Log */
+  /* ⑦ Log */
   .log-panel{max-height:80px;padding:6px 12px}
   .le{font-size:10px}
+  .log-lbl{font-size:9px}
 
-  /* Trade panel — generous padding */
+  /* ⑧ Trade panel */
+  .trade-panel{overflow:visible!important;height:auto!important;flex-shrink:0}
   .trade-sec{padding:10px 14px}
-  .mode-btn{font-size:12px;padding:7px}
-  .field-val{font-size:15px}
-  .tv-input{font-size:14px;padding:7px 9px}
-  .sl-tp-box{padding:9px;margin:8px 0}
-  .sl-label{font-size:10px;width:72px}
+  .trade-sec-title{font-size:9px;margin-bottom:6px}
+  .mode-btn{font-size:12px;padding:7px 5px}
+  .field-lbl{font-size:9px}
+  .field-val{font-size:14px;margin-bottom:5px}
+  .tv-input{font-size:14px;padding:8px}
+  .sl-tp-box{padding:8px;margin:7px 0}
+  .sl-tp-lbl{font-size:9px;margin-bottom:5px}
+  .sl-label{font-size:10px;width:68px}
   .sl-input{font-size:12px;padding:5px 7px}
   .action-btns{gap:6px}
-  .btn-buy,.btn-sell,.btn-cover{font-size:13px;padding:10px 8px}
-
-  /* Positions */
+  .btn-buy,.btn-sell,.btn-cover{font-size:13px;padding:11px 6px}
+  .cost-hint{font-size:10px}
+  .pos-row{padding:5px 0}
   .pos-name{font-size:11px}
   .pos-detail{font-size:10px}
   .pos-pnl{font-size:11px}
 
-  /* Footer */
-  .footer-bar{flex-direction:column;gap:1px;padding:8px 14px;text-align:center;height:auto}
-  .footer-bar span:last-child{display:none}
-}
+  /* ⑨ Report modal: slide up from bottom */
+  .rpt-overlay.show{align-items:flex-end;padding:0}
+  .rpt-modal{border-radius:12px 12px 0 0;max-height:88vh;overflow-y:auto;width:100%;margin:0}
 
-@media(max-width:420px){
-  .stat{width:95px}
-  .sk-pr{font-size:13px}
-  #kline-wrap{height:180px}
-  .hdr-logo span:first-child{font-size:13px}
+  /* ⑩ Footer */
+  .footer-bar{height:auto!important;padding:8px 14px;flex-direction:column;gap:2px;text-align:center;font-size:10px}
+  .footer-bar span:last-child{display:none}
 }
 </style>
 </head>
@@ -809,7 +812,7 @@ async function generateReport(){
     renderReport(JSON.parse(m[0]));
     document.getElementById('dl-btn').style.display='';
   }catch(e){
-    document.getElementById('report-content').innerHTML=`<div style="padding:20px;color:#ef5350;font-size:12px;line-height:1.8">Failed: ${e.message}</div>`;
+    document.getElementById('report-content').innerHTML=`<div style="padding:20px;color:#ef5350;font-size:12px;line-height:1.8">报告生成失败：${e.message}</div>`;
   }
 }
 
@@ -823,14 +826,14 @@ function renderReport(r){
   const freq={};G.tradeLog.forEach(t=>{freq[t.code]=(freq[t.code]||0)+1;});
   const fav=Object.entries(freq).sort((a,b)=>b[1]-a[1])[0];
   const now=new Date();
-  const dateStr=now.toLocaleString('en-US',{month:'short',day:'numeric',year:'numeric'});
+  const dateStr=now.toLocaleString('zh-CN',{year:'numeric',month:'long',day:'numeric'});
   const pk=getPersonaKey(),pi=PINFO[pk];
   const tc=r.styleColor||'#26a69a',tb=r.styleBg||'#1a3a2a';
   document.getElementById('report-content').innerHTML=`
   <div id="report-card">
     <div class="rc-hdr">
       <div class="rc-logo">📈</div>
-      <div><div class="rc-title">Trading Simulation Report · Advanced</div><div class="rc-sub">20-Day Simulation · ${dateStr} · Developed by Elena Zhang</div></div>
+      <div><div class="rc-title">交易模拟复盘报告 · 进阶版</div><div class="rc-sub">20天模拟交易 · ${dateStr} · Developed by Elena Zhang</div></div>
     </div>
     <div class="rc-persona">
       <div style="background:${pi.bg};border-radius:8px;padding:6px;flex-shrink:0">${PSVG[pk]}</div>
@@ -840,51 +843,67 @@ function renderReport(r){
       </div>
     </div>
     <div class="rc-stats">
-      <div class="rc-stat"><div class="rc-stat-v">${r.finalAsset}</div><div class="rc-stat-l">Final Assets</div></div>
-      <div class="rc-stat"><div class="rc-stat-v ${pnl>=0?'up':'dn'}">${r.pnlStr}</div><div class="rc-stat-l">Total P&L</div></div>
-      <div class="rc-stat"><div class="rc-stat-v ${pnl>=0?'up':'dn'}">${r.pnlPct}</div><div class="rc-stat-l">Return</div></div>
-      <div class="rc-stat"><div class="rc-stat-v">${r.tradeCount}</div><div class="rc-stat-l">Trades</div></div>
+      <div class="rc-stat"><div class="rc-stat-v">${r.finalAsset}</div><div class="rc-stat-l">最终资产</div></div>
+      <div class="rc-stat"><div class="rc-stat-v ${pnl>=0?'up':'dn'}">${r.pnlStr}</div><div class="rc-stat-l">总盈亏</div></div>
+      <div class="rc-stat"><div class="rc-stat-v ${pnl>=0?'up':'dn'}">${r.pnlPct}</div><div class="rc-stat-l">收益率</div></div>
+      <div class="rc-stat"><div class="rc-stat-v">${r.tradeCount}</div><div class="rc-stat-l">交易次数</div></div>
     </div>
     <div class="rc-summary">${r.styleSummary}</div>
     <div class="rc-scores">
-      <div class="rc-score-box"><div class="rc-score-v" style="color:${r.divScore>=80?'#26a69a':r.divScore>=60?'#f59f00':'#ef5350'}">${r.divScore}pts</div><div class="rc-score-l">分散度</div>${sBar(r.divScore)}</div>
-      <div class="rc-score-box"><div class="rc-score-v" style="color:${r.riskScore>=80?'#26a69a':r.riskScore>=60?'#f59f00':'#ef5350'}">${r.riskScore}pts</div><div class="rc-score-l">风险控制</div>${sBar(r.riskScore)}</div>
-      <div class="rc-score-box"><div class="rc-score-v" style="color:${r.discScore>=80?'#26a69a':r.discScore>=60?'#f59f00':'#ef5350'}">${r.discScore}pts</div><div class="rc-score-l">交易纪律</div>${sBar(r.discScore)}</div>
+      <div class="rc-score-box"><div class="rc-score-v" style="color:${r.divScore>=80?'#26a69a':r.divScore>=60?'#f59f00':'#ef5350'}">${r.divScore}分</div><div class="rc-score-l">分散度</div>${sBar(r.divScore)}</div>
+      <div class="rc-score-box"><div class="rc-score-v" style="color:${r.riskScore>=80?'#26a69a':r.riskScore>=60?'#f59f00':'#ef5350'}">${r.riskScore}分</div><div class="rc-score-l">风险控制</div>${sBar(r.riskScore)}</div>
+      <div class="rc-score-box"><div class="rc-score-v" style="color:${r.discScore>=80?'#26a69a':r.discScore>=60?'#f59f00':'#ef5350'}">${r.discScore}分</div><div class="rc-score-l">交易纪律</div>${sBar(r.discScore)}</div>
     </div>
     <div style="font-size:11px;line-height:1.7;color:var(--tv-text2);padding:8px 10px;background:var(--tv-bg3);border-radius:4px;margin-bottom:12px">
-      <div style="margin-bottom:4px">Diversification (${r.divScore}pts): Stocks held and position concentration. 3+ stocks, none above 40% scores highest.</div>
-      <div style="margin-bottom:4px">风险控制（${r.riskScore}pts): Stop-loss rate on longs and short margin usage.</div>
-      <div style="margin-bottom:4px">交易纪律（${r.discScore}pts): Trade frequency and SL/TP execution. Fewer planned trades score highest.</div>
+      <div style="margin-bottom:4px">分散度（${r.divScore}分）：持仓股票数量及集中度。持有3只以上且单只不超过40%可获高分。</div>
+      <div style="margin-bottom:4px">风险控制（${r.riskScore}分）：多仓止损设置比例及空仓保证金占比。</div>
+      <div style="margin-bottom:4px">交易纪律（${r.discScore}分）：交易频率及止损止盈触发情况。操作克制可获高分。</div>
       ${r.scoreComment?`<div style="margin-top:6px;padding-top:6px;border-top:0.5px solid var(--tv-border)"><strong style="color:var(--tv-text)">AI点评：</strong>${r.scoreComment}</div>`:''}
     </div>
     <div class="rc-grid">
-      <div class="rc-box"><div class="rc-box-t">✅ Strengths</div><ul>${r.pros.map(p=>`<li>${p}</li>`).join('')}</ul></div>
-      <div class="rc-box"><div class="rc-box-t">⚠️ Improve</div><ul>${r.cons.map(c=>`<li>${c}</li>`).join('')}</ul></div>
+      <div class="rc-box"><div class="rc-box-t">✅ 三大优点</div><ul>${r.pros.map(p=>`<li>${p}</li>`).join('')}</ul></div>
+      <div class="rc-box"><div class="rc-box-t">⚠️ 待改进点</div><ul>${r.cons.map(c=>`<li>${c}</li>`).join('')}</ul></div>
     </div>
     <div class="rc-sugs">
-      <div style="font-size:10px;font-weight:500;color:var(--tv-text2);text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px">📚 Learning Plan</div>
+      <div style="font-size:10px;font-weight:500;color:var(--tv-text2);text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px">📚 个性化学习建议</div>
       ${r.suggestions.map((s,i)=>`<div class="rc-sug"><div class="rc-sug-n">${i+1}</div><div><div class="rc-sug-t">${s.title}</div><div class="rc-sug-a">${s.action}</div></div></div>`).join('')}
     </div>
     <div class="rc-closing">${r.closing}</div>
     <div class="rc-footer">
-      <span>Top: ${fav?fav[0]+'(×'+fav[1]+')':'—'} · SL:${G.slT} TP:${G.tpT}</span>
+      <span>最常交易：${fav?fav[0]+'(×'+fav[1]+')':'—'} · 止损:${G.slT} 止盈:${G.tpT}</span>
       <span>Powered by DeepSeek AI</span>
     </div>
-    <div class="rc-disc">AI-generated from fictional simulation data. Not financial advice. No real funds. Consult a licensed advisor for real investment decisions. Developed by Elena Zhang · Educational use only.</div>
+    <div class="rc-disc">本报告由AI根据虚构模拟数据生成，不构成任何投资建议。所有数据为模拟数值，不涉及真实资金。进行真实投资前请咨询持牌金融顾问。Developed by Elena Zhang · 仅供教育用途</div>
   </div>`;
 }
 
 function closeReport(){document.getElementById('rpt-overlay').className='rpt-overlay';}
 
 async function downloadReport(){
-  const card=document.getElementById('report-card');if(!card)return;
+  const card=document.getElementById('report-card');
+  if(!card){alert('请先生成报告再下载');return;}
   const btn=document.getElementById('dl-btn');
+  const origText=btn.textContent;
   btn.textContent='生成中…';btn.disabled=true;
   try{
-    const canvas=await html2canvas(card,{scale:2,backgroundColor:'#1e222d',useCORS:true,logging:false});
-    const a=document.createElement('a');a.href=canvas.toDataURL('image/png');a.download='交易风格报告.png';a.click();
+    // Temporarily move card to body for html2canvas
+    const wrapper=document.createElement('div');
+    wrapper.style.cssText='position:fixed;left:-9999px;top:0;width:660px;background:#1e222d;z-index:-1';
+    wrapper.appendChild(card.cloneNode(true));
+    document.body.appendChild(wrapper);
+    const canvas=await html2canvas(wrapper.firstChild,{
+      scale:2,backgroundColor:'#1e222d',useCORS:true,logging:false,
+      width:660,windowWidth:660
+    });
+    document.body.removeChild(wrapper);
+    const link=document.createElement('a');
+    link.href=canvas.toDataURL('image/png');
+    link.download='交易风格报告.png';
+    document.body.appendChild(link);
+    link.click();
+    setTimeout(()=>document.body.removeChild(link),100);
   }catch(e){alert('下载失败：'+e.message);}
-  btn.textContent='⬇ 下载图片';btn.disabled=false;
+  btn.textContent=origText;btn.disabled=false;
 }
 
 document.getElementById('next-btn').onclick=()=>{
