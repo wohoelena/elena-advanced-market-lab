@@ -881,26 +881,23 @@ function closeReport(){document.getElementById('rpt-overlay').className='rpt-ove
 
 async function downloadReport(){
   const btn=document.getElementById('dl-btn');
+  const card=document.getElementById('report-card');
+  if(!card){alert('请先生成报告');return;}
   btn.textContent='生成中…';btn.disabled=true;
   try{
-    const card=document.getElementById('report-card');
-    if(!card)throw new Error('请先生成报告');
-    // Temporarily strip overflow/height constraints for full capture
     const modal=document.querySelector('.rpt-modal');
-    const overlay=document.getElementById('rpt-overlay');
-    const savedModal=modal?modal.style.cssText:'';
-    const savedOverlay=overlay?overlay.style.cssText:'';
+    const prevOverflow=modal?modal.style.overflow:'';
+    const prevMaxH=modal?modal.style.maxHeight:'';
     if(modal){modal.style.overflow='visible';modal.style.maxHeight='none';}
-    if(overlay){overlay.style.overflow='visible';}
-    const canvas=await html2canvas(card,{
-      scale:2,backgroundColor:'#1e222d',useCORS:true,logging:false,
-      scrollX:0,scrollY:0
-    });
-    if(modal)modal.style.cssText=savedModal;
-    if(overlay)overlay.style.cssText=savedOverlay;
-    const url=canvas.toDataURL('image/png');
-    const a=Object.assign(document.createElement('a'),{href:url,download:'交易风格报告.png'});
-    document.body.appendChild(a);a.click();document.body.removeChild(a);
+    const canvas=await html2canvas(card,{scale:2,backgroundColor:'#1e222d',useCORS:true,logging:false});
+    if(modal){modal.style.overflow=prevOverflow;modal.style.maxHeight=prevMaxH;}
+    canvas.toBlob(blob=>{
+      const url=URL.createObjectURL(blob);
+      const a=document.createElement('a');
+      a.href=url;a.download='交易风格报告.png';
+      document.body.appendChild(a);a.click();
+      setTimeout(()=>{document.body.removeChild(a);URL.revokeObjectURL(url);},300);
+    },'image/png');
   }catch(e){alert('下载失败：'+e.message);}
   btn.textContent='⬇ 下载图片';btn.disabled=false;
 }
