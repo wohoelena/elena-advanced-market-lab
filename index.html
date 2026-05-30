@@ -2,7 +2,7 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Market Lab · 股票交易模拟器</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <style>
@@ -182,7 +182,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .rc-footer span{font-size:10px;color:var(--tv-text2)}
 .rc-disc{margin-top:8px;padding:6px 10px;background:var(--tv-bg3);border-radius:4px;font-size:9px;color:var(--tv-text2);line-height:1.5;text-align:center}
 
-.footer-bar{border-top:0.5px solid var(--tv-border);padding:5px 14px;font-size:10px;color:var(--tv-text2);display:flex;justify-content:space-between;flex-shrink:0}
+.footer-bar{border-top:0.5px solid var(--tv-border);padding:8px 16px;font-size:10px;color:var(--tv-text2);display:flex;flex-direction:column;align-items:center;flex-shrink:0}
 /* ── Mobile: full reflow ── */
 
 
@@ -419,9 +419,9 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
     </div>
   </div>
 
-  <div class="footer-bar">
-    <span>Developed by Elena Zhang &middot; &copy; 2026 Market Lab</span>
-    <span>仅供教育用途 · 不构成投资建议 · 不涉及真实资金</span>
+  <div class="footer-bar" style="height:auto;padding:10px 16px;flex-direction:column;gap:3px;text-align:center">
+    <div style="font-size:10px;font-weight:500">Developed by Elena Zhang &middot; &copy; 2026 Market Lab</div>
+    <div style="font-size:9px;color:var(--tv-text2);line-height:1.5;max-width:720px;margin:0 auto"><strong>免责声明：</strong>本模拟器仅供教育与培训目的使用。所有股票、价格、新闻事件及市场走势均为虚构，不代表任何真实证券或金融市场。本模拟器中的任何内容均不构成投资建议或任何金融产品推荐。不涉及任何真实资金。模拟结果不能预测真实市场表现。进行真实投资前请务必咨询持牌金融顾问。</div>
   </div>
 
 </div>
@@ -463,25 +463,59 @@ const NEWS=[
   {day:20,stock:'ENRG',eff:1.18,msg:'📰 新能源汽车销量超预期，板块涨停潮！'},
 ];
 const PSVG={
-  guardian:`<svg viewBox="0 0 80 100" width="72" height="90"><ellipse cx="40" cy="22" rx="13" ry="13" fill="#1a3a2a" stroke="#26a69a" stroke-width="1.5"/><circle cx="40" cy="22" r="8" fill="#26a69a"/><rect x="27" y="38" width="26" height="22" rx="4" fill="#26a69a"/><path d="M33 44 L40 42 L47 44 L47 52 Q40 56 33 52 Z" fill="#1a3a2a" stroke="#1D9E75" stroke-width="1"/><rect x="30" y="59" width="8" height="16" rx="3" fill="#26a69a"/><rect x="42" y="59" width="8" height="16" rx="3" fill="#26a69a"/><rect x="17" y="40" width="10" height="6" rx="3" fill="#26a69a"/><rect x="53" y="40" width="10" height="6" rx="3" fill="#26a69a"/></svg>`,
-  bull:`<svg viewBox="0 0 80 100" width="72" height="90"><ellipse cx="40" cy="22" rx="13" ry="13" fill="#2d1a1a" stroke="#ef5350" stroke-width="1.5"/><circle cx="40" cy="22" r="8" fill="#ef5350"/><path d="M30 16 Q24 8 20 12" stroke="#ef5350" stroke-width="2.5" fill="none" stroke-linecap="round"/><path d="M50 16 Q56 8 60 12" stroke="#ef5350" stroke-width="2.5" fill="none" stroke-linecap="round"/><rect x="27" y="38" width="26" height="22" rx="4" fill="#ef5350"/><path d="M40 57 L40 44 M36 48 L40 44 L44 48" stroke="white" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/><rect x="30" y="59" width="8" height="16" rx="3" fill="#ef5350"/><rect x="42" y="59" width="8" height="16" rx="3" fill="#ef5350"/><rect x="17" y="38" width="10" height="6" rx="3" fill="#ef5350" transform="rotate(-20,22,41)"/><rect x="53" y="38" width="10" height="6" rx="3" fill="#ef5350" transform="rotate(20,58,41)"/></svg>`,
-  bear:`<svg viewBox="0 0 80 100" width="72" height="90"><ellipse cx="40" cy="22" rx="13" ry="13" fill="#1e1a3a" stroke="#7b6fd4" stroke-width="1.5"/><circle cx="40" cy="22" r="8" fill="#534AB7"/><circle cx="29" cy="13" r="5" fill="#534AB7"/><circle cx="51" cy="13" r="5" fill="#534AB7"/><circle cx="29" cy="13" r="3" fill="#1e1a3a"/><circle cx="51" cy="13" r="3" fill="#1e1a3a"/><rect x="27" y="38" width="26" height="22" rx="4" fill="#534AB7"/><path d="M40 44 L40 57 M36 53 L40 57 L44 53" stroke="white" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/><rect x="30" y="59" width="8" height="16" rx="3" fill="#534AB7"/><rect x="42" y="59" width="8" height="16" rx="3" fill="#534AB7"/><rect x="17" y="40" width="10" height="6" rx="3" fill="#534AB7"/><rect x="53" y="40" width="10" height="6" rx="3" fill="#534AB7"/></svg>`,
-  hunter:`<svg viewBox="0 0 80 100" width="72" height="90"><ellipse cx="40" cy="22" rx="13" ry="13" fill="#2a1f00" stroke="#f59f00" stroke-width="1.5"/><circle cx="40" cy="22" r="8" fill="#BA7517"/><rect x="44" y="18" width="14" height="5" rx="2" fill="#BA7517" stroke="#633806" stroke-width="1"/><rect x="22" y="19" width="10" height="4" rx="2" fill="#BA7517" stroke="#633806" stroke-width="1"/><rect x="32" y="18" width="12" height="5" rx="1" fill="#f59f00"/><rect x="27" y="38" width="26" height="22" rx="4" fill="#BA7517"/><rect x="38" y="43" width="4" height="9" rx="2" fill="white"/><circle cx="40" cy="56" r="2" fill="white"/><rect x="30" y="59" width="8" height="16" rx="3" fill="#BA7517"/><rect x="42" y="59" width="8" height="16" rx="3" fill="#BA7517"/><rect x="17" y="40" width="10" height="6" rx="3" fill="#BA7517"/><rect x="53" y="40" width="10" height="6" rx="3" fill="#BA7517"/></svg>`,
-  monk:`<svg viewBox="0 0 80 100" width="72" height="90"><ellipse cx="40" cy="22" rx="13" ry="13" fill="#2a2e39" stroke="#4c505c" stroke-width="1.5"/><circle cx="40" cy="22" r="8" fill="#4c505c"/><circle cx="36" cy="22" r="4" fill="none" stroke="#787b86" stroke-width="1.5"/><circle cx="44" cy="22" r="4" fill="none" stroke="#787b86" stroke-width="1.5"/><line x1="32" y1="22" x2="29" y2="21" stroke="#787b86" stroke-width="1.5"/><line x1="48" y1="22" x2="51" y2="21" stroke="#787b86" stroke-width="1.5"/><rect x="27" y="38" width="26" height="22" rx="4" fill="#4c505c"/><circle cx="35" cy="50" r="2" fill="#787b86"/><circle cx="40" cy="50" r="2" fill="#787b86"/><circle cx="45" cy="50" r="2" fill="#787b86"/><rect x="17" y="35" width="10" height="6" rx="3" fill="#4c505c" transform="rotate(-40,22,38)"/><rect x="53" y="40" width="10" height="6" rx="3" fill="#4c505c"/><rect x="30" y="59" width="8" height="18" rx="3" fill="#4c505c"/><rect x="42" y="59" width="8" height="18" rx="3" fill="#4c505c"/></svg>`,
-  octopus:`<svg viewBox="0 0 80 100" width="72" height="90"><ellipse cx="40" cy="22" rx="13" ry="13" fill="#1e3a5f" stroke="#2962ff" stroke-width="1.5"/><circle cx="40" cy="22" r="8" fill="#2962ff"/><rect x="27" y="38" width="26" height="22" rx="4" fill="#2962ff"/><rect x="14" y="35" width="13" height="5" rx="2.5" fill="#2962ff" transform="rotate(-35,20,37)"/><rect x="14" y="44" width="13" height="5" rx="2.5" fill="#2962ff"/><rect x="14" y="52" width="13" height="5" rx="2.5" fill="#2962ff" transform="rotate(25,20,54)"/><rect x="53" y="35" width="13" height="5" rx="2.5" fill="#2962ff" transform="rotate(35,60,37)"/><rect x="53" y="44" width="13" height="5" rx="2.5" fill="#2962ff"/><rect x="53" y="52" width="13" height="5" rx="2.5" fill="#2962ff" transform="rotate(-25,60,54)"/><circle cx="40" cy="49" r="5" fill="white" opacity="0.2"/><line x1="40" y1="44" x2="40" y2="54" stroke="white" stroke-width="1.5"/><line x1="35" y1="49" x2="45" y2="49" stroke="white" stroke-width="1.5"/><rect x="30" y="59" width="8" height="16" rx="3" fill="#2962ff"/><rect x="42" y="59" width="8" height="16" rx="3" fill="#2962ff"/></svg>`,
-  flash:`<svg viewBox="0 0 80 100" width="72" height="90"><ellipse cx="40" cy="22" rx="13" ry="13" fill="#2d1a2a" stroke="#D4537E" stroke-width="1.5"/><circle cx="40" cy="22" r="8" fill="#D4537E"/><path d="M38 12 L34 20 L39 20 L35 30 L44 18 L39 18 Z" fill="#2d1a2a" stroke="#D4537E" stroke-width="0.5"/><rect x="27" y="38" width="26" height="22" rx="4" fill="#D4537E"/><path d="M44 43 L30 50 M46 48 L32 55" stroke="white" stroke-width="1.5" stroke-linecap="round"/><rect x="30" y="59" width="8" height="16" rx="3" fill="#D4537E" transform="rotate(15,34,67)"/><rect x="42" y="59" width="8" height="16" rx="3" fill="#D4537E" transform="rotate(-15,46,67)"/><rect x="16" y="42" width="11" height="5" rx="2.5" fill="#D4537E" transform="rotate(-30,21,44)"/><rect x="53" y="36" width="11" height="5" rx="2.5" fill="#D4537E" transform="rotate(45,58,38)"/></svg>`,
-  dualist:`<svg viewBox="0 0 80 100" width="72" height="90"><ellipse cx="40" cy="22" rx="13" ry="13" fill="#1a2a10" stroke="#26a69a" stroke-width="1.5"/><circle cx="40" cy="22" r="8" fill="#3B6D11"/><line x1="34" y1="10" x2="30" y2="20" stroke="#97C459" stroke-width="2" stroke-linecap="round"/><line x1="46" y1="10" x2="50" y2="20" stroke="#97C459" stroke-width="2" stroke-linecap="round"/><rect x="27" y="38" width="26" height="22" rx="4" fill="#3B6D11"/><path d="M36 44 L36 56 M33 47 L36 44 L39 47" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path d="M44 56 L44 44 M41 53 L44 56 L47 53" stroke="#9FE1CB" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/><rect x="30" y="59" width="8" height="16" rx="3" fill="#3B6D11"/><rect x="42" y="59" width="8" height="16" rx="3" fill="#3B6D11"/><rect x="17" y="38" width="10" height="6" rx="3" fill="#3B6D11" transform="rotate(-20,22,41)"/><rect x="53" y="38" width="10" height="6" rx="3" fill="#3B6D11" transform="rotate(20,58,41)"/></svg>`
+  beaver:`<svg viewBox="0 0 80 100" width="72" height="90"><ellipse cx="40" cy="22" rx="13" ry="13" fill="#1a3a2a" stroke="#26a69a" stroke-width="1.5"/><circle cx="40" cy="22" r="8" fill="#26a69a"/><rect x="27" y="38" width="26" height="22" rx="4" fill="#26a69a"/><path d="M33 44 L40 42 L47 44 L47 52 Q40 56 33 52 Z" fill="#1a3a2a" stroke="#0f6e56" stroke-width="1"/><rect x="30" y="59" width="8" height="16" rx="3" fill="#26a69a"/><rect x="42" y="59" width="8" height="16" rx="3" fill="#26a69a"/><rect x="17" y="40" width="10" height="6" rx="3" fill="#26a69a"/><rect x="53" y="40" width="10" height="6" rx="3" fill="#26a69a"/></svg>`,
+  cheetah:`<svg viewBox="0 0 80 100" width="72" height="90"><ellipse cx="40" cy="22" rx="13" ry="13" fill="#2d1a1a" stroke="#ef5350" stroke-width="1.5"/><circle cx="40" cy="22" r="8" fill="#ef5350"/><path d="M30 16 Q24 8 20 12" stroke="#ef5350" stroke-width="2.5" fill="none" stroke-linecap="round"/><path d="M50 16 Q56 8 60 12" stroke="#ef5350" stroke-width="2.5" fill="none" stroke-linecap="round"/><rect x="27" y="38" width="26" height="22" rx="4" fill="#ef5350"/><path d="M40 57 L40 44 M36 48 L40 44 L44 48" stroke="white" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/><rect x="30" y="59" width="8" height="16" rx="3" fill="#ef5350"/><rect x="42" y="59" width="8" height="16" rx="3" fill="#ef5350"/><rect x="17" y="38" width="10" height="6" rx="3" fill="#ef5350" transform="rotate(-20,22,41)"/><rect x="53" y="38" width="10" height="6" rx="3" fill="#ef5350" transform="rotate(20,58,41)"/></svg>`,
+  bull:`<svg viewBox="0 0 80 100" width="72" height="90"><ellipse cx="40" cy="22" rx="13" ry="13" fill="#2d1a1a" stroke="#f44336" stroke-width="1.5"/><circle cx="40" cy="22" r="8" fill="#f44336"/><rect x="27" y="38" width="26" height="22" rx="4" fill="#f44336"/><rect x="30" y="59" width="8" height="16" rx="3" fill="#f44336"/><rect x="42" y="59" width="8" height="16" rx="3" fill="#f44336"/><rect x="17" y="40" width="10" height="6" rx="3" fill="#f44336"/><rect x="53" y="40" width="10" height="6" rx="3" fill="#f44336"/></svg>`,
+  spider:`<svg viewBox="0 0 80 100" width="72" height="90"><ellipse cx="40" cy="22" rx="13" ry="13" fill="#1e1a3a" stroke="#7b6fd4" stroke-width="1.5"/><circle cx="40" cy="22" r="8" fill="#534AB7"/><circle cx="29" cy="13" r="5" fill="#534AB7"/><circle cx="51" cy="13" r="5" fill="#534AB7"/><circle cx="29" cy="13" r="3" fill="#1e1a3a"/><circle cx="51" cy="13" r="3" fill="#1e1a3a"/><rect x="27" y="38" width="26" height="22" rx="4" fill="#534AB7"/><path d="M40 44 L40 57 M36 53 L40 57 L44 53" stroke="white" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/><rect x="30" y="59" width="8" height="16" rx="3" fill="#534AB7"/><rect x="42" y="59" width="8" height="16" rx="3" fill="#534AB7"/><rect x="17" y="40" width="10" height="6" rx="3" fill="#534AB7"/><rect x="53" y="40" width="10" height="6" rx="3" fill="#534AB7"/></svg>`,
+  elephant:`<svg viewBox="0 0 80 100" width="72" height="90"><ellipse cx="40" cy="22" rx="13" ry="13" fill="#1a2a10" stroke="#66bb6a" stroke-width="1.5"/><circle cx="40" cy="22" r="8" fill="#4caf50"/><rect x="27" y="38" width="26" height="22" rx="4" fill="#4caf50"/><rect x="30" y="59" width="8" height="16" rx="3" fill="#4caf50"/><rect x="42" y="59" width="8" height="16" rx="3" fill="#4caf50"/><rect x="17" y="40" width="10" height="6" rx="3" fill="#4caf50"/><rect x="53" y="40" width="10" height="6" rx="3" fill="#4caf50"/></svg>`,
+  owl:`<svg viewBox="0 0 80 100" width="72" height="90"><ellipse cx="40" cy="22" rx="13" ry="13" fill="#2a1f00" stroke="#f59f00" stroke-width="1.5"/><circle cx="40" cy="22" r="8" fill="#BA7517"/><rect x="27" y="38" width="26" height="22" rx="4" fill="#BA7517"/><rect x="38" y="43" width="4" height="9" rx="2" fill="white"/><circle cx="40" cy="56" r="2" fill="white"/><rect x="30" y="59" width="8" height="16" rx="3" fill="#BA7517"/><rect x="42" y="59" width="8" height="16" rx="3" fill="#BA7517"/><rect x="17" y="40" width="10" height="6" rx="3" fill="#BA7517"/><rect x="53" y="40" width="10" height="6" rx="3" fill="#BA7517"/></svg>`,
+  wolf:`<svg viewBox="0 0 80 100" width="72" height="90"><ellipse cx="40" cy="22" rx="13" ry="13" fill="#1e1a3a" stroke="#9c88ff" stroke-width="1.5"/><circle cx="40" cy="22" r="8" fill="#673ab7"/><rect x="27" y="38" width="26" height="22" rx="4" fill="#673ab7"/><rect x="30" y="59" width="8" height="16" rx="3" fill="#673ab7"/><rect x="42" y="59" width="8" height="16" rx="3" fill="#673ab7"/><rect x="17" y="40" width="10" height="6" rx="3" fill="#673ab7"/><rect x="53" y="40" width="10" height="6" rx="3" fill="#673ab7"/></svg>`,
+  fox:`<svg viewBox="0 0 80 100" width="72" height="90"><ellipse cx="40" cy="22" rx="13" ry="13" fill="#2d1a1a" stroke="#ff7043" stroke-width="1.5"/><circle cx="40" cy="22" r="8" fill="#e64a19"/><rect x="27" y="38" width="26" height="22" rx="4" fill="#e64a19"/><rect x="30" y="59" width="8" height="16" rx="3" fill="#e64a19"/><rect x="42" y="59" width="8" height="16" rx="3" fill="#e64a19"/><rect x="17" y="40" width="10" height="6" rx="3" fill="#e64a19"/><rect x="53" y="40" width="10" height="6" rx="3" fill="#e64a19"/></svg>`,
+  eagle:`<svg viewBox="0 0 80 100" width="72" height="90"><ellipse cx="40" cy="22" rx="13" ry="13" fill="#1e3a5f" stroke="#42a5f5" stroke-width="1.5"/><circle cx="40" cy="22" r="8" fill="#1976d2"/><rect x="27" y="38" width="26" height="22" rx="4" fill="#1976d2"/><rect x="30" y="59" width="8" height="16" rx="3" fill="#1976d2"/><rect x="42" y="59" width="8" height="16" rx="3" fill="#1976d2"/><rect x="14" y="35" width="13" height="5" rx="2.5" fill="#1976d2" transform="rotate(-35,20,37)"/><rect x="53" y="35" width="13" height="5" rx="2.5" fill="#1976d2" transform="rotate(35,60,37)"/></svg>`,
+  dolphin:`<svg viewBox="0 0 80 100" width="72" height="90"><ellipse cx="40" cy="22" rx="13" ry="13" fill="#003333" stroke="#26c6da" stroke-width="1.5"/><circle cx="40" cy="22" r="8" fill="#00acc1"/><rect x="27" y="38" width="26" height="22" rx="4" fill="#00acc1"/><rect x="30" y="59" width="8" height="16" rx="3" fill="#00acc1"/><rect x="42" y="59" width="8" height="16" rx="3" fill="#00acc1"/><rect x="17" y="40" width="10" height="6" rx="3" fill="#00acc1"/><rect x="53" y="40" width="10" height="6" rx="3" fill="#00acc1"/></svg>`,
+  whale:`<svg viewBox="0 0 80 100" width="72" height="90"><ellipse cx="40" cy="22" rx="13" ry="13" fill="#0d1b2a" stroke="#5c6bc0" stroke-width="1.5"/><circle cx="40" cy="22" r="8" fill="#3949ab"/><rect x="27" y="38" width="26" height="22" rx="4" fill="#3949ab"/><rect x="30" y="59" width="8" height="16" rx="3" fill="#3949ab"/><rect x="42" y="59" width="8" height="16" rx="3" fill="#3949ab"/><rect x="14" y="44" width="13" height="5" rx="2.5" fill="#3949ab"/><rect x="53" y="44" width="13" height="5" rx="2.5" fill="#3949ab"/></svg>`,
+  horse:`<svg viewBox="0 0 80 100" width="72" height="90"><ellipse cx="40" cy="22" rx="13" ry="13" fill="#2a1500" stroke="#ffa726" stroke-width="1.5"/><circle cx="40" cy="22" r="8" fill="#f57c00"/><rect x="27" y="38" width="26" height="22" rx="4" fill="#f57c00"/><rect x="30" y="59" width="8" height="16" rx="3" fill="#f57c00"/><rect x="42" y="59" width="8" height="16" rx="3" fill="#f57c00"/><rect x="17" y="40" width="10" height="6" rx="3" fill="#f57c00"/><rect x="53" y="40" width="10" height="6" rx="3" fill="#f57c00"/></svg>`,
+  camel:`<svg viewBox="0 0 80 100" width="72" height="90"><ellipse cx="40" cy="22" rx="13" ry="13" fill="#2a1a00" stroke="#a1887f" stroke-width="1.5"/><circle cx="40" cy="22" r="8" fill="#795548"/><rect x="27" y="38" width="26" height="22" rx="4" fill="#795548"/><rect x="30" y="59" width="8" height="16" rx="3" fill="#795548"/><rect x="42" y="59" width="8" height="16" rx="3" fill="#795548"/><rect x="17" y="40" width="10" height="6" rx="3" fill="#795548"/><rect x="53" y="40" width="10" height="6" rx="3" fill="#795548"/></svg>`,
+  octopus:`<svg viewBox="0 0 80 100" width="72" height="90"><ellipse cx="40" cy="22" rx="13" ry="13" fill="#1e3a5f" stroke="#2962ff" stroke-width="1.5"/><circle cx="40" cy="22" r="8" fill="#2962ff"/><rect x="27" y="38" width="26" height="22" rx="4" fill="#2962ff"/><rect x="14" y="35" width="13" height="5" rx="2.5" fill="#2962ff" transform="rotate(-35,20,37)"/><rect x="14" y="44" width="13" height="5" rx="2.5" fill="#2962ff"/><rect x="14" y="52" width="13" height="5" rx="2.5" fill="#2962ff" transform="rotate(25,20,54)"/><rect x="53" y="35" width="13" height="5" rx="2.5" fill="#2962ff" transform="rotate(35,60,37)"/><rect x="53" y="44" width="13" height="5" rx="2.5" fill="#2962ff"/><rect x="53" y="52" width="13" height="5" rx="2.5" fill="#2962ff" transform="rotate(-25,60,54)"/><rect x="30" y="59" width="8" height="16" rx="3" fill="#2962ff"/><rect x="42" y="59" width="8" height="16" rx="3" fill="#2962ff"/></svg>`,
+  lynx:`<svg viewBox="0 0 80 100" width="72" height="90"><ellipse cx="40" cy="22" rx="13" ry="13" fill="#1a2a10" stroke="#9ccc65" stroke-width="1.5"/><circle cx="40" cy="22" r="8" fill="#7cb342"/><rect x="27" y="38" width="26" height="22" rx="4" fill="#7cb342"/><rect x="30" y="59" width="8" height="16" rx="3" fill="#7cb342"/><rect x="42" y="59" width="8" height="16" rx="3" fill="#7cb342"/><rect x="17" y="38" width="10" height="6" rx="3" fill="#7cb342" transform="rotate(-20,22,41)"/><rect x="53" y="38" width="10" height="6" rx="3" fill="#7cb342" transform="rotate(20,58,41)"/></svg>`,
+  rhino:`<svg viewBox="0 0 80 100" width="72" height="90"><ellipse cx="40" cy="22" rx="13" ry="13" fill="#2d1a2a" stroke="#D4537E" stroke-width="1.5"/><circle cx="40" cy="22" r="8" fill="#D4537E"/><path d="M38 12 L34 20 L39 20 L35 30 L44 18 L39 18 Z" fill="#2d1a2a" stroke="#D4537E" stroke-width="0.5"/><rect x="27" y="38" width="26" height="22" rx="4" fill="#D4537E"/><rect x="30" y="59" width="8" height="16" rx="3" fill="#D4537E"/><rect x="42" y="59" width="8" height="16" rx="3" fill="#D4537E"/><rect x="16" y="42" width="11" height="5" rx="2.5" fill="#D4537E" transform="rotate(-30,21,44)"/><rect x="53" y="36" width="11" height="5" rx="2.5" fill="#D4537E" transform="rotate(45,58,38)"/></svg>`
 };
+
 const PINFO={
-  guardian:{name:'稳健守护者',sub:'风险控制高手',c:'#26a69a',bg:'#1a3a2a'},
-  bull:{name:'激进多头牛',sub:'买入型冒险家',c:'#ef5350',bg:'#2d1a1a'},
-  bear:{name:'冷静空头熊',sub:'做空型逆向者',c:'#7b6fd4',bg:'#1e1a3a'},
-  hunter:{name:'消息猎手',sub:'新闻驱动型',c:'#f59f00',bg:'#2a1f00'},
-  monk:{name:'佛系观察者',sub:'谨慎观望型',c:'#787b86',bg:'#2a2e39'},
-  octopus:{name:'章鱼分散王',sub:'均衡多元型',c:'#2962ff',bg:'#1e3a5f'},
-  flash:{name:'闪电短线侠',sub:'高频交易型',c:'#D4537E',bg:'#2d1a2a'},
-  dualist:{name:'多空双剑客',sub:'多空双向型',c:'#26a69a',bg:'#1a2a10'}
+  beaver:{name:'The Builder 海狸',sub:'纪律严明的系统交易者',c:'#26a69a',bg:'#1a3a2a',
+    desc:'你构建交易系统并严格执行。纪律是你最强的武器。'},
+  cheetah:{name:'The Sniper 猎豹',sub:'精准出击，追求高胜率',c:'#ef5350',bg:'#2d1a1a',
+    desc:'你等待完美时机，一旦出手便精准无误。时机就是一切。'},
+  bull:{name:'The Trader 公牛',sub:'激进多头，行动力强',c:'#f44336',bg:'#2d1a1a',
+    desc:'你带着坚定信念追逐动能。高能量、高行动力、高野心。'},
+  spider:{name:'The Planner 蜘蛛',sub:'数据驱动，理性制定计划',c:'#7b6fd4',bg:'#1e1a3a',
+    desc:'你编织复杂的分析网络。每笔交易都经过计算，从不冲动。'},
+  elephant:{name:'The Protector 大象',sub:'风险控制优先，保护本金',c:'#4caf50',bg:'#1a2a10',
+    desc:'第一法则：保护本金。你成长缓慢，但几乎从不爆仓。'},
+  owl:{name:'The Observer 猫头鹰',sub:'冷静观察，等待明确信号',c:'#f59f00',bg:'#2a1f00',
+    desc:'你静静地从高处观察，等待时机明朗再出手。'},
+  wolf:{name:'The Hunter 狼',sub:'寻找被低估的机会',c:'#9c88ff',bg:'#1e1a3a',
+    desc:'你在别人恐惧的地方猎食。从混沌中寻找价值，在困惑中获利。'},
+  fox:{name:'The Contrarian 狐狸',sub:'不随大流，敢于逆势',c:'#ff7043',bg:'#2d1a1a',
+    desc:'当所有人恐慌时，你微笑着买入。你从群体错误和过度反应中获利。'},
+  eagle:{name:'The Visionary 雄鹰',sub:'提前发现趋势，布局未来',c:'#42a5f5',bg:'#1e3a5f',
+    desc:'你在趋势启动前便已察觉。长远眼光、大仓位、大耐心。'},
+  dolphin:{name:'The Explorer 海豚',sub:'喜欢尝试新领域，拓展边界',c:'#26c6da',bg:'#003333',
+    desc:'你热爱探索新策略和新市场。好奇、适应力强，永远在学习。'},
+  whale:{name:'The Thinker 鲸鱼',sub:'宏观思维，深入研究市场本质',c:'#5c6bc0',bg:'#0d1b2a',
+    desc:'你深入研究基本面。行动缓慢，但一旦出手便精准致命。'},
+  horse:{name:'The Rider 骏马',sub:'顺势而为，享受趋势的力量',c:'#ffa726',bg:'#2a1500',
+    desc:'你像冠军骑手一样驾驭趋势。动能启动时，你从不逆势。'},
+  camel:{name:'The Survivor 骆驼',sub:'生存第一，控制风险，活得久',c:'#a1887f',bg:'#2a1a00',
+    desc:'别人倒下时你还在。保住本金、控制风险、打持久战。'},
+  octopus:{name:'The Adapter 章鱼',sub:'灵活应变，持续进化',c:'#2962ff',bg:'#1e3a5f',
+    desc:'八条臂、八种策略。你以惊人的优雅适应任何市场环境。'},
+  lynx:{name:'The Opportunist 猞猁',sub:'捕捉短期机会，灵活进出',c:'#9ccc65',bg:'#1a2a10',
+    desc:'你扑向短期催化剂。快进快出，眼睛始终盯着下一个机会。'},
+  rhino:{name:'The Challenger 犀牛',sub:'挑战市场共识，追求超额收益',c:'#D4537E',bg:'#2d1a2a',
+    desc:'你冲向别人逃离的机会。大胆押注、高度坚定、无怨无悔。'}
 };
+
 
 function fmt(n){return'¥'+Math.round(n).toLocaleString('zh-CN')}
 function fmtPct(n){return(n>=0?'+':'')+n.toFixed(2)+'%'}
@@ -512,22 +546,39 @@ function shortMargin(){return Object.entries(G.shorts).reduce((s,[c,p])=>{const 
 
 function getPersonaKey(){
   const tl=G.tradeLog;
+  if(!tl.length)return'owl';
   const sc=tl.filter(t=>t.action==='short').length;
   const bc=tl.filter(t=>t.action==='buy').length;
-  const nc=tl.filter(t=>t.news).length;
-  const slC=Object.values(G.sltp).filter(r=>r&&r.sl).length;
+  const slC=Object.keys(G.sltp).filter(c=>G.sltp[c]&&G.sltp[c].sl).length;
+  const tpC=Object.keys(G.sltp).filter(c=>G.sltp[c]&&G.sltp[c].tp).length;
   const stocks=new Set(tl.map(t=>t.code)).size;
   const freq={};tl.forEach(t=>{freq[t.code]=(freq[t.code]||0)+1;});
-  const mf=Math.max(0,...Object.values(freq));
-  if(sc>=4)return'bear';
-  if(sc>=2&&bc>=3)return'dualist';
-  if(slC>=3&&stocks>=3)return'guardian';
-  if(nc>=4)return'hunter';
-  if(tl.length>=18)return'flash';
-  if(stocks>=4&&mf<=3)return'octopus';
-  if(tl.length<=3)return'monk';
-  if(bc>=6&&slC===0)return'bull';
-  return'guardian';
+  const vals=Object.values(freq);
+  const mf=Math.max(0,...vals);
+  const nc=tl.filter(t=>t.news).length;
+  const n=tl.length;
+  const lv=longVal(),sm=shortMargin(),sp=shortPnl();
+  const total=G.cash+lv+sm+sp;
+  const pnl=total-G.init;
+  const pct=pnl/G.init;
+  // 16 types ranked by specificity
+  if(n>=18&&sc===0&&slC===0)return'rhino';        // extreme YOLO long
+  if(n>=18)return'lynx';                           // hyper-active
+  if(sc>=4&&bc>=3)return'octopus';                 // both sides multi-stock
+  if(sc>=4)return'fox';                            // heavy short/contrarian
+  if(sc>=2&&bc>=2)return'wolf';                    // long+short hunter
+  if(slC>=3&&tpC>=3&&stocks>=3)return'spider';     // planner: uses both SL+TP
+  if(slC>=3&&stocks>=3)return'elephant';           // protector: risk-first
+  if(slC>=3)return'beaver';                        // builder: structured
+  if(tpC>=3&&pct>0.05)return'horse';               // trend rider: TP profit-taking
+  if(nc>=4&&n>=8)return'cheetah';                  // news sniper
+  if(nc>=3)return'owl';                            // news observer
+  if(stocks>=4&&mf<=3)return'dolphin';             // explorer: broad market
+  if(stocks>=4)return'eagle';                      // visionary: wide horizon
+  if(mf>=6&&stocks<=2)return'whale';               // deep thinker on few stocks
+  if(n<=3)return'camel';                           // survivor: barely trades
+  if(pct<-0.05)return'bull';                       // bull who got wrecked
+  return'horse';                                   // default: trend follower
 }
 
 function checkSLTP(){
@@ -873,32 +924,36 @@ function renderReport(r){
       <span>最常交易：${fav?fav[0]+'(×'+fav[1]+')':'—'} · 止损:${G.slT} 止盈:${G.tpT}</span>
       <span>Powered by DeepSeek AI</span>
     </div>
-    <div class="rc-disc">本报告由AI根据虚构模拟数据生成，不构成任何投资建议。所有数据为模拟数值，不涉及真实资金。进行真实投资前请咨询持牌金融顾问。Developed by Elena Zhang · 仅供教育用途</div>
+    <div class="rc-disc">本报告由AI根据虚构模拟数据生成，仅供教育用途。不构成任何投资建议、证券买卖邀请或金融产品推荐。所有数字为虚拟模拟数值，无货币价值。模拟成绩不能预测真实市场表现。进行真实投资决策前请务必咨询持牌金融顾问。© 2026 Market Lab · Developed by Elena Zhang · 仅供教育用途</div>
   </div>`;
 }
 
 function closeReport(){document.getElementById('rpt-overlay').className='rpt-overlay';}
 
 async function downloadReport(){
-  const btn=document.getElementById('dl-btn');
   const card=document.getElementById('report-card');
   if(!card){alert('请先生成报告');return;}
+  const btn=document.getElementById('dl-btn');
   btn.textContent='生成中…';btn.disabled=true;
+  const modal=document.querySelector('.rpt-modal');
+  const prevOverflow=modal?modal.style.overflow:'';
+  const prevMaxH=modal?modal.style.maxHeight:'';
+  if(modal){modal.style.overflow='visible';modal.style.maxHeight='none';}
   try{
-    const modal=document.querySelector('.rpt-modal');
-    const prevOverflow=modal?modal.style.overflow:'';
-    const prevMaxH=modal?modal.style.maxHeight:'';
-    if(modal){modal.style.overflow='visible';modal.style.maxHeight='none';}
     const canvas=await html2canvas(card,{scale:2,backgroundColor:'#1e222d',useCORS:true,logging:false});
     if(modal){modal.style.overflow=prevOverflow;modal.style.maxHeight=prevMaxH;}
-    canvas.toBlob(blob=>{
-      const url=URL.createObjectURL(blob);
-      const a=document.createElement('a');
-      a.href=url;a.download='交易风格报告.png';
-      document.body.appendChild(a);a.click();
-      setTimeout(()=>{document.body.removeChild(a);URL.revokeObjectURL(url);},300);
-    },'image/png');
-  }catch(e){alert('下载失败：'+e.message);}
+    // Store data and trigger via hidden <a> in DOM
+    const url=canvas.toDataURL('image/png');
+    let a=document.getElementById('_dl_anchor');
+    if(!a){a=document.createElement('a');a.id='_dl_anchor';a.style.display='none';document.body.appendChild(a);}
+    a.href=url;
+    a.download='交易风格报告.png';
+    a.click();
+    setTimeout(()=>{if(a.parentNode)a.parentNode.removeChild(a);},1000);
+  }catch(e){
+    if(modal){modal.style.overflow=prevOverflow;modal.style.maxHeight=prevMaxH;}
+    alert('下载失败：'+e.message);
+  }
   btn.textContent='⬇ 下载图片';btn.disabled=false;
 }
 
